@@ -4,84 +4,81 @@
     {
       "id": "01-hook",
       "from": 0,
-      "dur": 125,
+      "dur": 113,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 107,
-        "title": 10
+        "voice": 3,
+        "voiceEnd": 102,
+        "title": 3,
+        "s2": 65
       }
     },
     {
       "id": "02-vision",
-      "from": 125,
-      "dur": 84,
+      "from": 113,
+      "dur": 93,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 40,
-        "title": 10
+        "voice": 6,
+        "voiceEnd": 83,
+        "title": 6
       }
     },
     {
       "id": "03-web",
-      "from": 209,
-      "dur": 198,
+      "from": 206,
+      "dur": 90,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 180,
-        "s1": 10,
-        "s2": 77,
-        "s3": 132
+        "voice": 6,
+        "voiceEnd": 64,
+        "s1": 6
       }
     },
     {
       "id": "04-cyber",
-      "from": 407,
-      "dur": 172,
+      "from": 296,
+      "dur": 90,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 154,
-        "s1": 10,
-        "s2": 119
+        "voice": 6,
+        "voiceEnd": 73,
+        "s1": 6
       }
     },
     {
       "id": "05-ia",
-      "from": 579,
-      "dur": 205,
+      "from": 386,
+      "dur": 128,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 187,
-        "s1": 10,
-        "s2": 109,
-        "s3": 163
+        "voice": 6,
+        "voiceEnd": 117,
+        "s1": 6,
+        "s2": 94
       }
     },
     {
       "id": "06-community",
-      "from": 784,
-      "dur": 295,
+      "from": 514,
+      "dur": 154,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 277,
-        "header": 10,
-        "w1": 84,
-        "w2": 152,
-        "w3": 206,
-        "w4": 256
+        "voice": 6,
+        "voiceEnd": 144,
+        "header": 6,
+        "w1": 66,
+        "w2": 85,
+        "w3": 107,
+        "w4": 122
       }
     },
     {
       "id": "07-cta",
-      "from": 1079,
-      "dur": 247,
+      "from": 668,
+      "dur": 213,
       "cues": {
-        "voice": 10,
-        "voiceEnd": 193,
-        "logo": 10,
-        "title": 73,
-        "bio": 153
+        "voice": 6,
+        "voiceEnd": 159,
+        "logo": 6,
+        "title": 64,
+        "bio": 127
       }
     }
   ],
-  "total": 1326
+  "total": 881
 }

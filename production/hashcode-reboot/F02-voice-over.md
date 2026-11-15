@@ -46,20 +46,8 @@ Le segment **21–25 s** (≈ 22 syllabes en 4 s) est le plus serré : il faudra
 ## Étape suivante
 **Enregistrement test** (même au téléphone) → mesure du timing réel (whisper.cpp est installé pour mesurer chaque mot) → verrouillage de la timeline F03.
 
-## Version produite (v3, 15/11/2026) — script réécrit, voix grave et posée
-Voix de synthèse en attendant un enregistrement humain : Piper `fr_FR-gilles-low` (≈ 94 Hz, CC0), hauteur abaissée d'1 demi-ton, débit ×1,05, pauses de 0,45 s entre les phrases.
-Pour chaque scène, 8 prises au maximum sont générées ; la plus fidèle au texte (contrôle whisper) est retenue.
-
-| Scène | Voix off |
-|---|---|
-| 01 Hook | En ce moment même… quelqu'un écrit le code qui changera ta vie. |
-| 02 Vision | Et si… c'était toi ? |
-| 03 Web | Tout commence par une idée. Quelques lignes de code. Et elle devient une application. |
-| 04 Cyber | Derrière chaque écran, des menaces invisibles. Apprends à les arrêter. |
-| 05 IA | Et l'intelligence artificielle ? Ne la subis pas. Construis-la. |
-| 06 Communauté | Ici, personne n'avance seul. On apprend. On expérimente. On construit. Ensemble. |
-| 07 CTA | HashCode Reboot. Ta place t'attend, où que tu sois. Le lien est dans ma bio. |
-
-Source unique : `production/hashcode-reboot/audio/script.json`. Génération : `build.py` (voix + chronologie + musique + mix).
-La durée totale découle de la voix : 44,2 s.
-Limite connue : la synthèse prononce imparfaitement « HashCode Reboot » (le logo est affiché au même instant).
+## Version produite (v4, 15/11/2026) — neuromarketing, voix « pub »
+Script et leviers détaillés dans [F09](F09-neuromarketing.md). Source unique : `audio/script.json`.
+Voix : Piper `fr_FR-gilles-low` (CC0), débit ×0,9, pauses 0,28 s, hauteur −0,5 demi-ton, traitement « radio » (compression forte, présence).
+10 prises max par scène, la plus fidèle (whisper) et la plus dynamique est retenue. Durée : 29,4 s.
+Limite connue : « HashCode Reboot » reste prononcé approximativement (logo affiché au même instant).

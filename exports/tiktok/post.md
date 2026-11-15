@@ -1,25 +1,23 @@
-# Publication TikTok — HashCode Reboot (v3)
+# Publication TikTok — HashCode Reboot (v4 neuromarketing)
 
-**Fichier** : `hashcode-reboot-tiktok.mp4` (1080×1920, 44 s, 30 fps, H.264, AAC, −14 LUFS, voix off grave)
-**Couverture** : `hashcode-reboot-cover.png` (plan final : logo + CTA)
+**Fichier** : `hashcode-reboot-tiktok.mp4` (1080×1920, 29 s, 30 fps, H.264, AAC, −14 LUFS, voix off)
+**Couverture** : `hashcode-reboot-cover.png` (plan final : logo + « TON PROFIL EN 2 MIN. »)
+**Stratégie** : voir `production/hashcode-reboot/F09-neuromarketing.md`
 
 ## Légende (à copier)
 
-En ce moment même, quelqu'un écrit le code qui changera ta vie.
-Et si c'était toi ? 👀
+Arrête de scroller. Ce message est pour toi. 👀
 
-💻 Web & Applications
-🛡️ Cybersécurité
-🤖 Intelligence artificielle
+Tu veux apprendre à programmer… mais seul, tu tournes en rond ?
+💻 Web & Applications · 🛡️ Cybersécurité · 🤖 IA
 
-Ici, personne n'avance seul. Ta place t'attend, où que tu sois.
+Ici, tu n'es plus seul. Crée ton profil en 2 min.
 🔗 Le lien est dans ma bio
 
-#HashCode #HashCodeReboot #dev #cybersécurité #intelligenceartificielle #IA #développeurweb #tech #apprendreàcoder #communautétech
+#HashCode #HashCodeReboot #dev #cybersécurité #intelligenceartificielle #IA #apprendreàcoder #développeurweb #tech #communautétech
 
 ## Réglages conseillés
-- ⚠️ **Obligatoire** : la vidéo dit « le lien est dans ma bio » → mettre `https://reboot.joinhashcode.com` dans la bio TikTok AVANT de publier.
-- Couverture : choisir la dernière seconde (logo + bouton) ou importer `hashcode-reboot-cover.png`.
-- Voix off : synthèse vocale Piper, voix « Gilles » (jeu de données CC0, aucune attribution requise).
-- Musique et effets : originaux, générés par code (aucun droit tiers).
-- Publier en 1080p (activer « Charger en HD » si l'option apparaît).
+- ⚠️ **Obligatoire** : mettre `https://reboot.joinhashcode.com` dans la bio TikTok AVANT de publier (la vidéo le dit).
+- Épingler un commentaire : « Le lien est dans ma bio 👆 Dis-nous en commentaire : web, cyber ou IA ? » (engagement + rappel du CTA).
+- Couverture : dernière seconde (logo + bouton) ou `hashcode-reboot-cover.png`.
+- Voix off : synthèse Piper, voix « Gilles » (CC0). Musique et effets originaux, générés par code.
