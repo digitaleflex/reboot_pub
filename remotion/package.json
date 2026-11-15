@@ -5,7 +5,9 @@
   "scripts": {
     "studio": "remotion studio",
     "render:test": "remotion render BrandTest ../exports/previews/brand-test.mp4",
-    "still:test": "remotion still BrandTest ../exports/previews/brand-test.png --frame=45"
+    "still:test": "remotion still BrandTest ../exports/previews/brand-test.png --frame=45",
+    "score": "python3 -I ../production/hashcode-reboot/audio/score.py public/score-raw.wav && ffmpeg -y -v error -i public/score-raw.wav -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 public/score.wav && rm public/score-raw.wav",
+    "render": "remotion render HashCodeReboot out/master.mp4 --crf=16 --audio-codec=aac --audio-bitrate=320k"
   },
   "dependencies": {
     "@remotion/cli": "4.0.543",

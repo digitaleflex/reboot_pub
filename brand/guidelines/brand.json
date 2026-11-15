@@ -15,16 +15,23 @@
     "textSecondary": "gray"
   },
   "logo": {
-    "horizontal": "brand/logo/hashcode-horizontal.png",
-    "stacked": "brand/logo/hashcode-stacked.png",
-    "symbol": "brand/logo/hashcode-symbol.svg",
-    "status": "À FOURNIR : fichiers officiels (SVG ou PNG transparent)"
+    "horizontalReboot": "brand/logo/hashcode-reboot-transparent.png",
+    "source": "https://reboot.joinhashcode.com/logo.png (site officiel), fond rendu transparent sans retouche du dessin",
+    "status": "SVG officiel toujours souhaité pour une qualité maximale"
   },
-  "domains": ["Web & Applications", "Cybersécurité", "Intelligence artificielle"],
-  "platforms": ["TikTok", "Instagram Reels", "YouTube Shorts"],
+  "domains": [
+    "Web & Applications",
+    "Cybersécurité",
+    "Intelligence artificielle"
+  ],
+  "platforms": [
+    "TikTok",
+    "Instagram Reels",
+    "YouTube Shorts"
+  ],
   "url": {
     "signup": "reboot.joinhashcode.com",
-    "status": "À VÉRIFIER avant toute utilisation à l'écran"
+    "status": "Vérifiée le 15/11/2026 (HTTP 200, page « HASHCODE REBOOT — Rejoins la communauté dev, cyber & IA »)"
   },
   "rules": [
     "Aucun témoignage, résultat ou statistique inventé",
