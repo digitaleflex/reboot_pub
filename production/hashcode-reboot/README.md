@@ -20,6 +20,7 @@
 | F06 | [Montage et postproduction](F06-post-production.md) | Montage |
 | F07 | [Ressources et fichiers](F07-assets.md) | Tous |
 | F08 | [Contrôle qualité](F08-quality-control.md) | Validation |
+| F09 | [Neuromarketing](F09-neuromarketing.md) | Stratégie |
 
 ## Deux productions distinctes
 - **Publicité de marque (ce dossier)** : vend la vision. Cinématographique, voix off, Remotion.

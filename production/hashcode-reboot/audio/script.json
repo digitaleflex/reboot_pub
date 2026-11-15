@@ -1,34 +1,106 @@
 {
-  "_doc": "Script voix off v3 (F02). Une réplique par scène, synthétisée d'un seul tenant (plus stable). Chaque phrase de 'sentences' est séparée par une pause ; 'cues' associe un repère d'animation au début d'une phrase (index). Plusieurs prises sont générées, la plus fidèle au texte (vérifiée par whisper) est retenue. 'say' = graphie envoyée à la synthèse (prononciation), 'text' = texte attendu.",
-  "voice": { "model": "fr_FR-gilles-low", "speaker": null, "lengthScale": 1.05, "sentenceSilence": 0.45, "pitchSemitones": -1.0, "takes": 8 },
+  "_doc": "Script voix off v4, construit sur des leviers de neuromarketing (voir F09). Une réplique par scène, synthétisée d'un seul tenant ; 'cues' associe un repère d'animation au début d'une phrase (index). Plusieurs prises sont générées, la plus fidèle au texte (whisper) est retenue. 'say' = graphie envoyée à la synthèse, 'text' = texte attendu.",
+  "voice": {
+    "model": "fr_FR-gilles-low",
+    "speaker": null,
+    "lengthScale": 0.9,
+    "sentenceSilence": 0.28,
+    "pitchSemitones": -0.5,
+    "takes": 10,
+    "style": "marketing"
+  },
   "fps": 30,
-  "lead": 0.35,
-  "tail": 0.6,
+  "lead": 0.2,
+  "tail": 0.35,
   "scenes": [
-    { "id": "01-hook", "minDur": 3.5,
-      "sentences": ["En ce moment même… quelqu'un écrit le code qui changera ta vie."],
-      "cues": { "title": 0 } },
-    { "id": "02-vision", "minDur": 2.8,
-      "sentences": ["Et si… c'était toi ?"],
-      "cues": { "title": 0 } },
-    { "id": "03-web", "minDur": 4.5,
-      "sentences": ["Tout commence par une idée.", "Quelques lignes de code.", "Et elle devient une application."],
-      "cues": { "s1": 0, "s2": 1, "s3": 2 } },
-    { "id": "04-cyber", "minDur": 4.5,
-      "sentences": ["Derrière chaque écran, des menaces invisibles.", "Apprends à les arrêter."],
-      "cues": { "s1": 0, "s2": 1 } },
-    { "id": "05-ia", "minDur": 4.5,
-      "sentences": ["Et l'intelligence artificielle ?", "Ne la subis pas.", "Construis-la."],
-      "cues": { "s1": 0, "s2": 1, "s3": 2 } },
-    { "id": "06-community", "minDur": 5.0,
-      "sentences": ["Ici, personne n'avance seul.", "On apprend.", "On expérimente.", "On construit.", "Ensemble."],
-      "cues": { "header": 0, "w1": 1, "w2": 2, "w3": 3, "w4": 4 } },
-    { "id": "07-cta", "minDur": 7.0, "tail": 1.8,
+    {
+      "id": "01-hook",
+      "minDur": 2.6,
+      "lead": 0.1,
       "sentences": [
-        { "say": "Hache code, ri boute.", "text": "hache code ri boute" },
-        "Ta place t'attend, où que tu sois.",
+        "Arrête de scroller.",
+        "Ce message est pour toi."
+      ],
+      "cues": {
+        "title": 0,
+        "s2": 1
+      }
+    },
+    {
+      "id": "02-vision",
+      "minDur": 2.6,
+      "sentences": [
+        "Tu veux apprendre à coder… mais seul, tu tournes en rond ?"
+      ],
+      "cues": {
+        "title": 0
+      }
+    },
+    {
+      "id": "03-web",
+      "minDur": 3.0,
+      "sentences": [
+        "Imagine… tu crées tes propres applications."
+      ],
+      "cues": {
+        "s1": 0
+      }
+    },
+    {
+      "id": "04-cyber",
+      "minDur": 3.0,
+      "sentences": [
+        "Tu apprends à bloquer les cyberattaques."
+      ],
+      "cues": {
+        "s1": 0
+      }
+    },
+    {
+      "id": "05-ia",
+      "minDur": 3.0,
+      "sentences": [
+        "Tu ne subis plus l'intelligence artificielle.",
+        "Tu la construis."
+      ],
+      "cues": {
+        "s1": 0,
+        "s2": 1
+      }
+    },
+    {
+      "id": "06-community",
+      "minDur": 4.0,
+      "sentences": [
+        "Et surtout, tu n'es plus seul : on apprend, on teste, on construit, ensemble."
+      ],
+      "cues": {
+        "header": 0
+      },
+      "cueWords": {
+        "w1": "apprend",
+        "w2": "teste",
+        "w3": "construit",
+        "w4": "ensemble"
+      }
+    },
+    {
+      "id": "07-cta",
+      "minDur": 6.0,
+      "tail": 1.8,
+      "sentences": [
+        {
+          "say": "Hache code, ri boute.",
+          "text": "hache code ri boute"
+        },
+        "Crée ton profil en deux minutes.",
         "Le lien est dans ma bio."
       ],
-      "cues": { "logo": 0, "title": 1, "bio": 2 } }
+      "cues": {
+        "logo": 0,
+        "title": 1,
+        "bio": 2
+      }
+    }
   ]
 }

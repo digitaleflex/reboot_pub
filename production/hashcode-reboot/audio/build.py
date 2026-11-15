@@ -37,6 +37,19 @@ def transcribe(cli, model, wav, tmp):
     return " ".join(r.stdout.split())
 
 
+def word_times(cli, model, wav, tmp):
+    """Mots (normalisés) et instant de début (s) d'après whisper.cpp."""
+    w16 = os.path.join(tmp, "w16.wav")
+    sh("ffmpeg", "-v", "error", "-y", "-i", wav, "-ar", "16000", "-ac", "1", w16)
+    base = os.path.join(tmp, "words")
+    subprocess.run([cli, "-m", model, "-l", "fr", "-ml", "1", "-sow", "-oj", "-of", base, "-f", w16], capture_output=True)
+    out = []
+    for seg in json.load(open(base + ".json"))["transcription"]:
+        for w_ in words(seg["text"]):
+            out.append((w_, seg["offsets"]["from"] / 1000))
+    return out
+
+
 def find_pauses(wav, min_len=0.28):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-i", wav, "-af", f"silencedetect=noise=-40dB:d={min_len}", "-f", "null", "-"],
                        capture_output=True, text=True)
@@ -85,10 +98,11 @@ def main():
             pauses = find_pauses(take)
             need = len(sents) - 1
             ok_pauses = len(pauses) >= need
-            score = sim - (0 if ok_pauses else 0.5)
+            # à fidélité égale, la prise la plus dynamique (courte) l'emporte
+            score = sim - (0 if ok_pauses else 0.5) - 0.01 * dur(take)
             if best is None or score > best[0]:
                 best = (score, take, heard, sorted(sorted(pauses, key=lambda p: -(p[1] - p[0]))[:need]))
-            if sim >= 0.97 and ok_pauses:
+            if sim >= 0.97 and ok_pauses and k >= 2:
                 break
         score, take, heard, pauses = best
         report.append((sc["id"], round(score, 3), heard))
@@ -97,6 +111,14 @@ def main():
         cues = {"voice": round(lead * fps), "voiceEnd": round((lead + d) * fps)}
         for name, idx in sc["cues"].items():
             cues[name] = round((lead + starts[min(idx, len(starts) - 1)]) * fps)
+        if sc.get("cueWords"):
+            wt = word_times(a.whisper, a.whisper_model, take, tmp)
+            after = 0.0
+            for name, wtxt in sc["cueWords"].items():
+                hit = next((tm for w_, tm in wt if tm >= after and w_.startswith(words(wtxt)[0])), None)
+                if hit is not None:
+                    cues[name] = round((lead + hit) * fps)
+                    after = hit + 0.05
         placed.append((take, t + lead))
         scene_dur = max(sc["minDur"], lead + d + tail)
         frames = round(scene_dur * fps)
@@ -122,9 +144,10 @@ def main():
     chain = (
         f"{ins}amix=inputs={len(placed)}:normalize=0,apad=whole_dur={total_s},atrim=0:{total_s},"
         f"rubberband=pitch={ratio:.4f}:formant=preserved,"
-        "highpass=f=60,equalizer=f=120:t=q:w=1:g=3,equalizer=f=350:t=q:w=1.2:g=-2,equalizer=f=4000:t=q:w=1.5:g=1.5,"
-        "acompressor=threshold=-22dB:ratio=3:attack=10:release=180:makeup=2,"
-        "aecho=0.8:0.6:40|85:0.10|0.06,loudnorm=I=-16:TP=-3[vo]"
+        "highpass=f=70,equalizer=f=110:t=q:w=1:g=3,equalizer=f=320:t=q:w=1.2:g=-3,"
+        "equalizer=f=2800:t=q:w=1.4:g=3.5,equalizer=f=5500:t=q:w=1.5:g=2,"
+        "acompressor=threshold=-26dB:ratio=4.5:attack=4:release=90:makeup=4,"
+        "aecho=0.85:0.5:30:0.05,loudnorm=I=-16:TP=-3[vo]"
     )
     voice = os.path.join(ROOT, "assets/voice/voiceover-master.wav")
     os.makedirs(os.path.dirname(voice), exist_ok=True)

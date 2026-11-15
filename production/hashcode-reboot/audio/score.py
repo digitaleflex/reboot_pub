@@ -108,6 +108,8 @@ A, D, F, E, C = 55.0, 73.42, 87.31, 82.41, 65.41  # La, Ré, Fa, Mi, Do (graves)
 # 01 — hook : impact sub sur le titre, souffle sombre
 s0, d0, c0 = SC["01-hook"]
 add(impact(3.0, 42, 1.3), c0.get("title", 0.4), 0.85)
+add(data_burst(0.35), 0.0, 0.55)  # interruption de schéma : glitch dès la 1re frame
+add(impact(1.2, 65, 0.5), c0.get("s2", 1.2), 0.6)  # « Ce message est pour toi »
 add(pad([A, A * 2], d0 + 0.5, 0.6), 0.0, 0.10)
 add(reverse_sweep(0.7), s0 + d0 - 0.7, 0.3)
 
@@ -117,11 +119,11 @@ add(pad([A, E * 2, A * 2, C * 4], d1 + 0.3, 1.0), s1, 0.20)
 add(riser(d1, 150, 3000), s1, 0.28)
 add(impact(1.6, 55, 0.6), c1.get("title2", s1 + 1), 0.6)
 
-# 03 à 05 — pulsations électroniques, une tonalité par univers (tempo 100 BPM, posé)
-BEAT = 0.6
+# 03 à 05 — pulsations électroniques, une tonalité par univers (tempo 120 BPM, énergique)
+BEAT = 0.5
 for sid, root, chord in [("03-web", A, [A, C * 2, E * 2]), ("04-cyber", F, [F, A * 2, C * 4]), ("05-ia", D, [D, F * 2, A * 2])]:
     st, du, cu = SC[sid]
-    add(bass_pulse(root, du, bpm=100), st, 0.18)
+    add(bass_pulse(root, du, bpm=120), st, 0.18)
     add(pad([c * 2 for c in chord], du, 0.8), st, 0.15)
     add(impact(1.2, 50, 0.4), st, 0.5)
     for b in np.arange(st, st + du - 0.05, BEAT):
