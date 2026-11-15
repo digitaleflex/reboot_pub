@@ -1,0 +1,35 @@
+{
+  "name": "HashCode Reboot",
+  "organization": "HashCode",
+  "language": "fr",
+  "colors": {
+    "black": "#050505",
+    "lime": "#C8FF00",
+    "white": "#FFFFFF",
+    "gray": "#A0A0A0"
+  },
+  "colorRoles": {
+    "background": "black",
+    "accent": "lime",
+    "text": "white",
+    "textSecondary": "gray"
+  },
+  "logo": {
+    "horizontal": "brand/logo/hashcode-horizontal.png",
+    "stacked": "brand/logo/hashcode-stacked.png",
+    "symbol": "brand/logo/hashcode-symbol.svg",
+    "status": "À FOURNIR : fichiers officiels (SVG ou PNG transparent)"
+  },
+  "domains": ["Web & Applications", "Cybersécurité", "Intelligence artificielle"],
+  "platforms": ["TikTok", "Instagram Reels", "YouTube Shorts"],
+  "url": {
+    "signup": "reboot.joinhashcode.com",
+    "status": "À VÉRIFIER avant toute utilisation à l'écran"
+  },
+  "rules": [
+    "Aucun témoignage, résultat ou statistique inventé",
+    "Aucune fausse interface ou fausse fonctionnalité de la plateforme",
+    "Le vert #C8FF00 sert d'accent et de remplissage, jamais pour du texte long",
+    "Ne jamais redessiner le logo : utiliser uniquement les fichiers officiels"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "name": "HashCode",
+  "creator": {
+    "name": "HashCode",
+    "handle": "@hashcode",
+    "lang": "fr",
+    "niche": "Communauté tech francophone : Web & Applications, Cybersécurité, Intelligence artificielle. Apprendre, expérimenter et construire ensemble.",
+    "cta": {
+      "sub": "Rejoins les bâtisseurs",
+      "button": "S'abonner",
+      "done": "Abonné"
+    }
+  },
+  "colors": {
+    "paper": "#050505",
+    "ink": "#FFFFFF",
+    "accent": "#C8FF00",
+    "onAccent": "#050505"
+  },
+  "paper": {
+    "bg": "flat",
+    "dots": {
+      "pitch": 40,
+      "r": 2,
+      "alpha": 0.06,
+      "color": "#FFFFFF"
+    }
+  },
+  "captions": {
+    "style": "band",
+    "upper": true,
+    "size": 84,
+    "maxWords": 3,
+    "font": "Archivo",
+    "weight": 800,
+    "bg": "#C8FF00",
+    "color": "#050505",
+    "hi": "#050505"
+  },
+  "display": {
+    "font": "Archivo Black",
+    "weight": 400,
+    "text": "Archivo"
+  },
+  "pace": {
+    "speed": 1.1
+  },
+  "visual": "motion",
+  "notes": [
+    "Profil institutionnel HashCode : jamais confondu avec le profil personnel eurin-hash",
+    "Handle Instagram et mot de commentaire à confirmer (placeholders)",
+    "Aucun témoignage, chiffre ou résultat inventé",
+    "Aucune fausse capture de la plateforme : uniquement des captures réelles fournies",
+    "Le logo vient uniquement de brand/logo/ (fichiers officiels)"
+  ]
+}
