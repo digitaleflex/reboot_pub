@@ -1,8 +1,8 @@
 # Licences — voix off
 
-| Fichier | Source | Licence |
+| Version | Source | Licence |
 |---|---|---|
-| `voiceover-master.wav` (v2) | Synthèse Piper (MIT), modèle `fr_FR-upmc-medium` entraîné sur le corpus UPMC « Pierre » (https://github.com/marytts/upmc-pierre-data) | Corpus : CC BY-SA 4.0. Usage commercial autorisé avec attribution |
+| v3 (actuelle) `voiceover-master.wav` | Synthèse Piper (MIT), modèle `fr_FR-gilles-low` (https://www.kaggle.com/datasets/bryanpark/french-single-speaker-speech-dataset) | Jeu de données CC0 : usage commercial libre, sans attribution |
+| v2 (remplacée) | Piper, modèle `fr_FR-upmc-medium` (UPMC « Pierre ») | CC BY-SA 4.0 |
 
-Attribution conseillée (si demandée) : « Voix : Piper / UPMC Pierre, CC BY-SA 4.0 ».
-Le modèle `fr_FR-tom-medium` a été écarté (jeu de données sous AGPLv3).
+Voix écartées : `fr_FR-tom-medium` (jeu de données AGPLv3) ; `fr_FR-mls-medium` (CC BY 4.0, voix graves mais synthèse instable sur les phrases courtes).

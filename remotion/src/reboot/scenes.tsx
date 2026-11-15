@@ -3,19 +3,24 @@ import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, us
 import { COLORS, VIDEO } from "../brand";
 import { Backdrop, DISPLAY, KineticTitle, MONO, SceneShell, Subline, Tag, clamp, makeParticles } from "./common";
 
+/** Durée de la scène (frames) et repères de la voix off (frames relatives), issus de data/timeline.json. */
+export type SceneProps = { dur: number; cues: Record<string, number> };
+const wordPace = (text: string, cues: Record<string, number>, from = "voice") =>
+  Math.max(2, Math.min(6, (cues.voiceEnd - cues[from]) / text.split(" ").length));
+
 const W = VIDEO.width;
 const H = VIDEO.height;
 
 /* ───────────── 01 — THE HOOK (0–3 s) ───────────── */
 const P1 = makeParticles(80, "hook");
-export const Hook: React.FC = () => {
+export const Hook: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const cy = H / 2;
   const beam = interpolate(frame, [0, 12], [0.35, 1], clamp);
   const beamO = interpolate(frame, [14, 40], [1, 0.3], clamp);
   const pull = interpolate(frame, [0, 34], [0, 1], { ...clamp, easing: (t) => 1 - Math.pow(1 - t, 3) });
   return (
-    <SceneShell duration={90}>
+    <SceneShell duration={dur}>
       <Backdrop glow={interpolate(frame, [0, 20], [0.35, 0.12], clamp)} />
       {P1.map((p, i) => {
         const x = interpolate(pull, [0, 1], [p.x, W / 2 + (p.x - W / 2) * 0.12]);
@@ -49,23 +54,38 @@ export const Hook: React.FC = () => {
           boxShadow: `0 0 30px 6px ${COLORS.lime}`,
         }}
       />
+      <div
+        style={{
+          position: "absolute",
+          top: VIDEO.safe.top + 60,
+          width: "100%",
+          textAlign: "center",
+          fontFamily: MONO,
+          fontSize: 34,
+          letterSpacing: "0.3em",
+          color: COLORS.gray,
+          opacity: interpolate(frame, [cues.voice, cues.voice + 10], [0, 1], clamp),
+        }}
+      >
+        EN CE MOMENT MÊME<span style={{ color: COLORS.lime, opacity: Math.floor(frame / 8) % 2 ? 1 : 0.2 }}>_</span>
+      </div>
       <KineticTitle
-        delay={4}
-        stagger={5}
-        size={132}
-        lines={[{ text: "LE FUTUR" }, { text: "NE SE" }, { text: "REGARDE", accent: true }, { text: "PAS." }]}
+        delay={cues.title + 18}
+        stagger={9}
+        size={108}
+        lines={[{ text: "QUELQU'UN" }, { text: "ÉCRIT LE CODE" }, { text: "QUI CHANGERA" }, { text: "TA VIE.", accent: true }]}
       />
     </SceneShell>
   );
 };
 
 /* ───────────── 02 — THE VISION (3–6 s) : tunnel numérique ───────────── */
-export const Vision: React.FC = () => {
+export const Vision: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const rings = 18;
   const rays = 16;
   return (
-    <SceneShell duration={90} outFrames={4}>
+    <SceneShell duration={dur} outFrames={4}>
       <Backdrop glow={0.08} />
       <AbsoluteFill>
         {new Array(rays).fill(0).map((_, i) => {
@@ -110,7 +130,7 @@ export const Vision: React.FC = () => {
         })}
       </AbsoluteFill>
       <AbsoluteFill style={{ background: "radial-gradient(ellipse at center, rgba(5,5,5,0.85) 18%, transparent 55%)" }} />
-      <KineticTitle delay={6} stagger={6} size={150} lines={[{ text: "IL SE" }, { text: "CONSTRUIT.", accent: true }]} />
+      <KineticTitle delay={cues.title} stagger={Math.round((cues.voiceEnd - cues.voice) * 0.45)} size={140} lines={[{ text: "ET SI…" }, { text: "C'ÉTAIT TOI ?", accent: true }]} />
     </SceneShell>
   );
 };
@@ -129,16 +149,17 @@ const CODE: { t: string; c?: string }[] = [
   { t: "  );" },
   { t: "}", c: COLORS.lime },
 ];
-export const Web: React.FC = () => {
+const WEB_LINE = "Tout commence par une idée. Quelques lignes de code. Et elle devient une application.";
+export const Web: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const chars = Math.floor(interpolate(frame, [6, 90], [0, CODE.reduce((a, l) => a + l.t.length + 1, 0)], clamp));
   let left = chars;
-  const pan = interpolate(frame, [0, 150], [60, -60]);
+  const pan = interpolate(frame, [0, dur], [60, -60]);
   const win = spring({ frame, fps, config: { damping: 200 }, durationInFrames: 22 });
   const card = spring({ frame: frame - 26, fps, config: { damping: 200 }, durationInFrames: 22 });
   return (
-    <SceneShell duration={150}>
+    <SceneShell duration={dur}>
       <Backdrop glow={0.12} glowY={36} />
       <Tag index="01" label="WEB & APPS" />
       <div style={{ position: "absolute", left: 0, right: 0, top: 330, height: 700, perspective: 1600 }}>
@@ -206,7 +227,7 @@ export const Web: React.FC = () => {
         </div>
       </div>
       <KineticTitle top={1060} delay={18} stagger={6} size={100} lines={[{ text: "WEB &" }, { text: "APPLICATIONS", accent: true }]} />
-      <Subline top={1330} delay={40} text="Là où les idées deviennent des applications." />
+      <Subline top={1330} delay={cues.s1} perWord={wordPace(WEB_LINE, cues)} text={WEB_LINE} />
     </SceneShell>
   );
 };
@@ -214,7 +235,8 @@ export const Web: React.FC = () => {
 /* ───────────── 04 — CYBERSÉCURITÉ (11–16 s) ───────────── */
 const NODES4 = makeParticles(22, "cyber").map((p) => ({ x: 80 + (p.x / W) * (W - 160), y: 300 + (p.y / H) * 760 }));
 const SHIELD = "M200 20 L360 80 V200 C360 300 290 370 200 410 C110 370 40 300 40 200 V80 Z";
-export const Cyber: React.FC = () => {
+const CYBER_LINE = "Derrière chaque écran, des menaces invisibles. Apprends à les arrêter.";
+export const Cyber: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const draw = interpolate(frame, [8, 50], [1, 0], { ...clamp, easing: (t) => 1 - Math.pow(1 - t, 2) });
@@ -224,7 +246,7 @@ export const Cyber: React.FC = () => {
   const cx = W / 2;
   const cy = 680;
   return (
-    <SceneShell duration={150}>
+    <SceneShell duration={dur}>
       <Backdrop glow={0.1} glowY={36} />
       <Tag index="02" label="CYBERSÉCURITÉ" />
       <svg width={W} height={H} style={{ position: "absolute" }}>
@@ -282,7 +304,7 @@ export const Cyber: React.FC = () => {
         </svg>
       </div>
       <KineticTitle top={1060} delay={20} stagger={6} size={112} lines={[{ text: "CYBER" }, { text: "SÉCURITÉ", accent: true }]} />
-      <Subline top={1330} delay={42} text="Là où les compétences protègent le monde numérique." />
+      <Subline top={1330} delay={cues.s1} perWord={wordPace(CYBER_LINE, cues)} text={CYBER_LINE} />
     </SceneShell>
   );
 };
@@ -295,12 +317,13 @@ const NN = LAYERS.map((n, li) =>
     y: 680 + (ni - (n - 1) / 2) * 105,
   })),
 );
-export const AI: React.FC = () => {
+const AI_LINE = "Et l'intelligence artificielle ? Ne la subis pas. Construis-la.";
+export const AI: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const wave = (frame * 0.035) % 1.4; // position de l'onde (0 → 1 = gauche → droite)
   const appear = (li: number) => interpolate(frame, [li * 6, li * 6 + 14], [0, 1], clamp);
   return (
-    <SceneShell duration={150}>
+    <SceneShell duration={dur}>
       <Backdrop glow={0.12} glowY={36} />
       <Tag index="03" label="IA" />
       <svg width={W} height={H} style={{ position: "absolute" }}>
@@ -339,7 +362,7 @@ export const AI: React.FC = () => {
         )}
       </svg>
       <KineticTitle top={1060} delay={18} stagger={6} size={100} lines={[{ text: "INTELLIGENCE" }, { text: "ARTIFICIELLE", accent: true }]} />
-      <Subline top={1330} delay={42} text="Là où les possibilités repoussent les limites." />
+      <Subline top={1330} delay={cues.s1} perWord={wordPace(AI_LINE, cues)} text={AI_LINE} />
     </SceneShell>
   );
 };
@@ -361,16 +384,16 @@ const GLYPHS = [
   { label: "◈", from: [360, -260] },
   { label: "⬡", from: [0, 380] },
 ];
-export const Community: React.FC = () => {
+export const Community: React.FC<SceneProps> = ({ dur, cues }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const conv = interpolate(frame, [0, 26], [0, 1], { ...clamp, easing: (t) => t * t * t });
   const flash = interpolate(frame, [24, 28, 40], [0, 1, 0], clamp);
   const sym = spring({ frame: frame - 26, fps, config: { damping: 200 }, durationInFrames: 20 });
-  const words = ["APPRENDRE.", "EXPÉRIMENTER.", "CONSTRUIRE."];
+  const words = ["APPRENDRE.", "EXPÉRIMENTER.", "CONSTRUIRE.", "ENSEMBLE."];
   const cy = 640;
   return (
-    <SceneShell duration={165} outFrames={6}>
+    <SceneShell duration={dur} outFrames={6}>
       <Backdrop glow={0.1 + flash * 0.5} glowY={33} />
       <div
         style={{
@@ -385,7 +408,7 @@ export const Community: React.FC = () => {
           opacity: interpolate(frame, [0, 10], [0, 1], clamp),
         }}
       >
-        LES TROIS UNIVERS. <span style={{ color: COLORS.lime }}>UNE AMBITION.</span>
+        ICI, PERSONNE <span style={{ color: COLORS.lime }}>N'AVANCE SEUL.</span>
       </div>
       {GLYPHS.map((g, i) => (
         <div
@@ -431,7 +454,7 @@ export const Community: React.FC = () => {
       <AbsoluteFill style={{ background: COLORS.white, opacity: flash * 0.35, mixBlendMode: "screen" }} />
       <div style={{ position: "absolute", top: 960, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
         {words.map((w, i) => {
-          const p = spring({ frame: frame - [72, 93, 125][i], fps, config: { damping: 200 }, durationInFrames: 14 });
+          const p = spring({ frame: frame - [cues.w1, cues.w2, cues.w3, cues.w4][i], fps, config: { damping: 200 }, durationInFrames: 14 });
           return (
             <div
               key={w}
@@ -440,11 +463,11 @@ export const Community: React.FC = () => {
                 fontWeight: 900,
                 fontSize: 96,
                 lineHeight: 1.05,
-                color: i === 2 ? COLORS.lime : COLORS.white,
+                color: i === 3 ? COLORS.lime : COLORS.white,
                 opacity: p,
                 letterSpacing: `${interpolate(p, [0, 1], [0.3, 0.02])}em`,
                 filter: `blur(${(1 - p) * 12}px)`,
-                textShadow: i === 2 ? "0 0 40px rgba(200,255,0,0.45)" : undefined,
+                textShadow: i === 3 ? "0 0 40px rgba(200,255,0,0.45)" : undefined,
               }}
             >
               {w}
@@ -457,16 +480,17 @@ export const Community: React.FC = () => {
 };
 
 /* ───────────── 07 — FINAL CTA (25–30 s) ───────────── */
-export const CTA: React.FC = () => {
+export const CTA: React.FC<SceneProps> = ({ cues }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const wipe = interpolate(frame, [2, 24], [0, 100], { ...clamp, easing: (t) => 1 - Math.pow(1 - t, 3) });
   const glow = interpolate(frame, [10, 30, 70], [0, 1, 0.45], clamp);
-  const btn = spring({ frame: frame - 110, fps, config: { damping: 12 }, durationInFrames: 30 });
-  const pulse = 1 + Math.max(0, Math.sin((frame - 130) / 9)) * 0.03 * (frame > 130 ? 1 : 0);
-  const url = interpolate(frame, [96, 108], [0, 1], clamp);
-  const bio = spring({ frame: frame - 136, fps, config: { damping: 14 }, durationInFrames: 20 });
-  const bioPulse = frame > 160 ? 0.5 + 0.5 * Math.sin((frame - 160) / 6) : 1;
+  const btn = spring({ frame: frame - (cues.title + 40), fps, config: { damping: 12 }, durationInFrames: 30 });
+  const pulse = 1 + Math.max(0, Math.sin((frame - cues.title - 60) / 9)) * 0.03 * (frame > cues.title + 60 ? 1 : 0);
+  const url = interpolate(frame, [cues.title + 28, cues.title + 40], [0, 1], clamp);
+  const sub = interpolate(frame, [cues.title + 14, cues.title + 26], [0, 1], clamp);
+  const bio = spring({ frame: frame - cues.bio, fps, config: { damping: 14 }, durationInFrames: 20 });
+  const bioPulse = frame > cues.bio + 24 ? 0.5 + 0.5 * Math.sin((frame - cues.bio - 24) / 6) : 1;
   return (
     <AbsoluteFill style={{ opacity: interpolate(frame, [0, 6], [0, 1], clamp) }}>
       <Backdrop glow={0.12 + glow * 0.12} glowY={30} />
@@ -477,11 +501,26 @@ export const CTA: React.FC = () => {
       </div>
       <KineticTitle
         top={720}
-        delay={56}
+        delay={cues.title}
         stagger={5}
-        size={92}
-        lines={[{ text: "TA PLACE EST" }, { text: "PARMI LES" }, { text: "BÂTISSEURS.", accent: true }]}
+        size={124}
+        lines={[{ text: "TA PLACE" }, { text: "T'ATTEND.", accent: true }]}
       />
+      <div
+        style={{
+          position: "absolute",
+          top: 1020,
+          width: "100%",
+          textAlign: "center",
+          fontFamily: MONO,
+          fontSize: 28,
+          letterSpacing: "0.14em",
+          color: COLORS.gray,
+          opacity: sub,
+        }}
+      >
+        DEV · CYBER · IA — OÙ QUE TU SOIS
+      </div>
       <div
         style={{
           position: "absolute",

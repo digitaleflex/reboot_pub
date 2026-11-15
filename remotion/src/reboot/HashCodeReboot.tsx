@@ -1,30 +1,36 @@
-// Publicité HashCode Reboot — 34 s, 1080×1920, 30 fps (storyboard F03).
+// Publicité HashCode Reboot — 1080×1920, 30 fps (storyboard F03), durée pilotée par la voix off.
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { COLORS } from "../brand";
 import { LightSweep } from "./common";
 import { AI, CTA, Community, Cyber, Hook, Vision, Web } from "./scenes";
+import timeline from "../data/timeline.json";
 
-export const SCENES = [
-  { id: "01-hook", from: 0, dur: 90, C: Hook },
-  { id: "02-vision", from: 90, dur: 90, C: Vision },
-  { id: "03-web", from: 180, dur: 150, C: Web },
-  { id: "04-cyber", from: 330, dur: 150, C: Cyber },
-  { id: "05-ia", from: 480, dur: 150, C: AI },
-  { id: "06-community", from: 630, dur: 165, C: Community },
-  { id: "07-cta", from: 795, dur: 225, C: CTA },
-] as const;
+const COMPONENTS = {
+  "01-hook": Hook,
+  "02-vision": Vision,
+  "03-web": Web,
+  "04-cyber": Cyber,
+  "05-ia": AI,
+  "06-community": Community,
+  "07-cta": CTA,
+} as const;
 
-export const TOTAL = 1020; // 34 s : scènes 06 et 07 allongées pour la voix off
+// Chronologie générée par production/hashcode-reboot/audio/build.py (calée sur la voix off)
+export const SCENES = timeline.scenes as unknown as { id: keyof typeof COMPONENTS; from: number; dur: number; cues: Record<string, number> }[];
+export const TOTAL = timeline.total;
 
 export const HashCodeReboot: React.FC<{ withMusic?: boolean }> = ({ withMusic = true }) => (
   <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-    {SCENES.map(({ id, from, dur, C }) => (
-      <Sequence key={id} name={id} from={from} durationInFrames={dur}>
-        <C />
-      </Sequence>
-    ))}
-    {[173, 323, 473, 623].map((f) => (
+    {SCENES.map(({ id, from, dur, cues }) => {
+      const C = COMPONENTS[id];
+      return (
+        <Sequence key={id} name={id} from={from} durationInFrames={dur}>
+          <C dur={dur} cues={cues} />
+        </Sequence>
+      );
+    })}
+    {SCENES.slice(2, 6).map(({ from }) => from - 7).map((f) => (
       <Sequence key={f} name="light-sweep" from={f} durationInFrames={15}>
         <LightSweep />
       </Sequence>

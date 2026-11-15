@@ -1,0 +1,87 @@
+{
+  "fps": 30,
+  "scenes": [
+    {
+      "id": "01-hook",
+      "from": 0,
+      "dur": 125,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 107,
+        "title": 10
+      }
+    },
+    {
+      "id": "02-vision",
+      "from": 125,
+      "dur": 84,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 40,
+        "title": 10
+      }
+    },
+    {
+      "id": "03-web",
+      "from": 209,
+      "dur": 198,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 180,
+        "s1": 10,
+        "s2": 77,
+        "s3": 132
+      }
+    },
+    {
+      "id": "04-cyber",
+      "from": 407,
+      "dur": 172,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 154,
+        "s1": 10,
+        "s2": 119
+      }
+    },
+    {
+      "id": "05-ia",
+      "from": 579,
+      "dur": 205,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 187,
+        "s1": 10,
+        "s2": 109,
+        "s3": 163
+      }
+    },
+    {
+      "id": "06-community",
+      "from": 784,
+      "dur": 295,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 277,
+        "header": 10,
+        "w1": 84,
+        "w2": 152,
+        "w3": 206,
+        "w4": 256
+      }
+    },
+    {
+      "id": "07-cta",
+      "from": 1079,
+      "dur": 247,
+      "cues": {
+        "voice": 10,
+        "voiceEnd": 193,
+        "logo": 10,
+        "title": 73,
+        "bio": 153
+      }
+    }
+  ],
+  "total": 1326
+}

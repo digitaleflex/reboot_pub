@@ -1,18 +1,21 @@
-"""Bande-son originale HashCode Reboot (34 s, 48 kHz), générée par code : aucun droit tiers.
+"""Bande-son originale HashCode Reboot (48 kHz), générée par code : aucun droit tiers.
+Calée sur remotion/src/data/timeline.json (scènes et repères de la voix off).
 Calée sur le storyboard F03 : 120 BPM (1 temps = 0,5 s), changements de scène sur les temps.
-Usage : python3 -I score.py <sortie.wav>
+Usage : python3 -I score.py <sortie.wav> <timeline.json>
 """
-import sys, wave
+import json, sys, wave
 import numpy as np
 
 SR = 48000
-DUR = 34.0
+TL = json.load(open(sys.argv[2]))
+FPS = TL["fps"]
+DUR = TL["total"] / FPS
 N = int(SR * DUR)
 t = np.arange(N) / SR
 rng = np.random.default_rng(7)
 out = np.zeros((N, 2))
 
-SCENES = [0, 3, 6, 11, 16, 21, 26.5]  # secondes (F03)
+SC = {x["id"]: (x["from"] / FPS, x["dur"] / FPS, {k: x["from"] / FPS + v / FPS for k, v in x["cues"].items()}) for x in TL["scenes"]}
 
 
 def add(sig, start, gain=1.0, pan=0.0):
@@ -102,49 +105,50 @@ def data_burst(length=0.8):
 
 A, D, F, E, C = 55.0, 73.42, 87.31, 82.41, 65.41  # La, Ré, Fa, Mi, Do (graves)
 
-# 00–03 : impact sub + silence contrôlé, souffle sombre
-add(impact(2.8, 45, 1.2), 0.43, 0.9)
-add(pad([A, A * 2], 3.0, 0.4), 0.0, 0.10)
-add(reverse_sweep(0.7), 2.3, 0.35)
+# 01 — hook : impact sub sur le titre, souffle sombre
+s0, d0, c0 = SC["01-hook"]
+add(impact(3.0, 42, 1.3), c0.get("title", 0.4), 0.85)
+add(pad([A, A * 2], d0 + 0.5, 0.6), 0.0, 0.10)
+add(reverse_sweep(0.7), s0 + d0 - 0.7, 0.3)
 
-# 03–06 : montée atmosphérique (tunnel)
-add(pad([A, E * 2, A * 2, C * 4], 3.2, 1.2), 3.0, 0.22)
-add(riser(2.8, 150, 3000), 3.2, 0.30)
-add(impact(1.5, 60, 0.5), 3.0, 0.45)
+# 02 — vision : montée atmosphérique, impact sur « c'était toi ? »
+s1, d1, c1 = SC["02-vision"]
+add(pad([A, E * 2, A * 2, C * 4], d1 + 0.3, 1.0), s1, 0.20)
+add(riser(d1, 150, 3000), s1, 0.28)
+add(impact(1.6, 55, 0.6), c1.get("title2", s1 + 1), 0.6)
 
-# 06–21 : pulsations électroniques + kicks, texture qui s'intensifie
-for sc, (root, chord) in zip([6, 11, 16], [(A, [A, C * 2, E * 2]), (F, [F, A * 2, C * 4]), (D, [D, F * 2, A * 2])]):
-    length = 5.0
-    add(bass_pulse(root, length), sc, 0.22)
-    add(pad([c * 2 for c in chord], length, 0.6), sc, 0.16)
-    add(impact(1.2, 50, 0.4), sc, 0.55)
-    for b in np.arange(sc, sc + length, 0.5):
-        add(kick(), b, 0.55)
-    for b in np.arange(sc + 0.25, sc + length, 0.5):
-        add(tick(1.0), b, 1.0, pan=0.3)
-    for b in np.arange(sc, sc + length, 0.125):
-        add(tick(0.4), b, 0.5, pan=-0.3)
-add(data_burst(0.9), 7.0, 0.5, pan=-0.4)
-add(data_burst(0.9), 12.0, 0.5, pan=0.4)
-add(data_burst(0.6), 17.5, 0.4)
-for sc in [10.4, 15.4, 20.3]:
-    add(reverse_sweep(0.6), sc, 0.4)
+# 03 à 05 — pulsations électroniques, une tonalité par univers (tempo 100 BPM, posé)
+BEAT = 0.6
+for sid, root, chord in [("03-web", A, [A, C * 2, E * 2]), ("04-cyber", F, [F, A * 2, C * 4]), ("05-ia", D, [D, F * 2, A * 2])]:
+    st, du, cu = SC[sid]
+    add(bass_pulse(root, du, bpm=100), st, 0.18)
+    add(pad([c * 2 for c in chord], du, 0.8), st, 0.15)
+    add(impact(1.2, 50, 0.4), st, 0.5)
+    for b in np.arange(st, st + du - 0.05, BEAT):
+        add(kick(), b, 0.45)
+    for b in np.arange(st + BEAT / 2, st + du - 0.05, BEAT):
+        add(tick(1.0), b, 0.8, pan=0.3)
+    add(data_burst(0.8), st + 0.9, 0.35, pan=-0.4)
+    add(reverse_sweep(0.6), st + du - 0.6, 0.35)
 
-# 21–26,5 : crescendo (fusion des trois univers) + battements des mots
-add(pad([A, E * 2, A * 2, C * 4, E * 4], 5.5, 2.0), 21.0, 0.32)
-add(riser(5.5, 120, 5000), 21.0, 0.30)
-for b in np.arange(21.0, 26.5, 0.5):
-    add(kick(), b, 0.45 + (b - 21) * 0.06)
-for w in [23.4, 24.1, 25.17]:  # apprendre / expérimenter / construire (voix)
-    add(impact(0.8, 70, 0.3), w, 0.5)
+# 06 — communauté : crescendo, un battement par mot prononcé
+s5, d5, c5 = SC["06-community"]
+add(pad([A, E * 2, A * 2, C * 4, E * 4], d5, 2.0), s5, 0.30)
+add(riser(d5, 120, 5000), s5, 0.28)
+for b in np.arange(s5, s5 + d5 - 0.05, BEAT):
+    add(kick(), b, 0.4 + (b - s5) / d5 * 0.3)
+for w in ["w1", "w2", "w3", "w4"]:
+    if w in c5:
+        add(impact(0.9, 70, 0.35), c5[w], 0.5)
 
-# 26,5–34 : impact final + signature sonore (accord lumineux qui s'éteint)
-add(impact(4.5, 40, 1.6), 26.5, 1.0)
-add(pad([A, E * 2, A * 2, C * 4, E * 4, A * 4], 7.5, 0.05), 26.5, 0.30)
+# 07 — CTA : impact final, nappe lumineuse, signature sur « Ta place t'attend »
+s6, d6, c6 = SC["07-cta"]
+add(impact(4.5, 40, 1.6), s6, 1.0)
+add(pad([A, E * 2, A * 2, C * 4, E * 4, A * 4], d6, 0.05), s6, 0.28)
 sig_n = int(2.5 * SR)
 tt = np.arange(sig_n) / SR
 sig = (np.sin(2 * np.pi * 880 * tt) + 0.5 * np.sin(2 * np.pi * 1318.5 * tt)) * env(sig_n, 0.003, 0.5) * 0.3
-add(sig, 30.17, 0.6)  # « Rejoins-nous »
+add(sig, c6.get("title", s6 + 3), 0.55)
 
 # fondu final + normalisation de crête (la loudness finale est réglée par ffmpeg)
 fade = np.minimum(1, (DUR - t) / 1.2)[:, None]
