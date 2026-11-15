@@ -1,4 +1,4 @@
-// Publicité HashCode Reboot — 30 s, 1080×1920, 30 fps (storyboard F03).
+// Publicité HashCode Reboot — 34 s, 1080×1920, 30 fps (storyboard F03).
 import React from "react";
 import { AbsoluteFill, Audio, Sequence, staticFile } from "remotion";
 import { COLORS } from "../brand";
@@ -11,11 +11,11 @@ export const SCENES = [
   { id: "03-web", from: 180, dur: 150, C: Web },
   { id: "04-cyber", from: 330, dur: 150, C: Cyber },
   { id: "05-ia", from: 480, dur: 150, C: AI },
-  { id: "06-community", from: 630, dur: 120, C: Community },
-  { id: "07-cta", from: 750, dur: 150, C: CTA },
+  { id: "06-community", from: 630, dur: 165, C: Community },
+  { id: "07-cta", from: 795, dur: 225, C: CTA },
 ] as const;
 
-export const TOTAL = 900;
+export const TOTAL = 1020; // 34 s : scènes 06 et 07 allongées pour la voix off
 
 export const HashCodeReboot: React.FC<{ withMusic?: boolean }> = ({ withMusic = true }) => (
   <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
@@ -29,6 +29,6 @@ export const HashCodeReboot: React.FC<{ withMusic?: boolean }> = ({ withMusic = 
         <LightSweep />
       </Sequence>
     ))}
-    {withMusic ? <Audio src={staticFile("score.wav")} /> : null}
+    {withMusic ? <Audio src={staticFile("mix.wav")} /> : null}
   </AbsoluteFill>
 );

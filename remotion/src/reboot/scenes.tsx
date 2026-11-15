@@ -370,7 +370,7 @@ export const Community: React.FC = () => {
   const words = ["APPRENDRE.", "EXPÉRIMENTER.", "CONSTRUIRE."];
   const cy = 640;
   return (
-    <SceneShell duration={120} outFrames={6}>
+    <SceneShell duration={165} outFrames={6}>
       <Backdrop glow={0.1 + flash * 0.5} glowY={33} />
       <div
         style={{
@@ -385,7 +385,7 @@ export const Community: React.FC = () => {
           opacity: interpolate(frame, [0, 10], [0, 1], clamp),
         }}
       >
-        TROIS UNIVERS. <span style={{ color: COLORS.lime }}>UNE AMBITION.</span>
+        LES TROIS UNIVERS. <span style={{ color: COLORS.lime }}>UNE AMBITION.</span>
       </div>
       {GLYPHS.map((g, i) => (
         <div
@@ -431,7 +431,7 @@ export const Community: React.FC = () => {
       <AbsoluteFill style={{ background: COLORS.white, opacity: flash * 0.35, mixBlendMode: "screen" }} />
       <div style={{ position: "absolute", top: 960, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
         {words.map((w, i) => {
-          const p = spring({ frame: frame - (20 + i * 30), fps, config: { damping: 200 }, durationInFrames: 14 });
+          const p = spring({ frame: frame - [72, 93, 125][i], fps, config: { damping: 200 }, durationInFrames: 14 });
           return (
             <div
               key={w}
@@ -462,10 +462,11 @@ export const CTA: React.FC = () => {
   const { fps } = useVideoConfig();
   const wipe = interpolate(frame, [2, 24], [0, 100], { ...clamp, easing: (t) => 1 - Math.pow(1 - t, 3) });
   const glow = interpolate(frame, [10, 30, 70], [0, 1, 0.45], clamp);
-  const btn = spring({ frame: frame - 52, fps, config: { damping: 12 }, durationInFrames: 30 });
-  const pulse = 1 + Math.max(0, Math.sin((frame - 70) / 9)) * 0.03 * (frame > 70 ? 1 : 0);
-  const url = interpolate(frame, [44, 58], [0, 1], clamp);
-  const facts = interpolate(frame, [66, 80], [0, 1], clamp);
+  const btn = spring({ frame: frame - 110, fps, config: { damping: 12 }, durationInFrames: 30 });
+  const pulse = 1 + Math.max(0, Math.sin((frame - 130) / 9)) * 0.03 * (frame > 130 ? 1 : 0);
+  const url = interpolate(frame, [96, 108], [0, 1], clamp);
+  const bio = spring({ frame: frame - 136, fps, config: { damping: 14 }, durationInFrames: 20 });
+  const bioPulse = frame > 160 ? 0.5 + 0.5 * Math.sin((frame - 160) / 6) : 1;
   return (
     <AbsoluteFill style={{ opacity: interpolate(frame, [0, 6], [0, 1], clamp) }}>
       <Backdrop glow={0.12 + glow * 0.12} glowY={30} />
@@ -476,8 +477,8 @@ export const CTA: React.FC = () => {
       </div>
       <KineticTitle
         top={720}
-        delay={16}
-        stagger={6}
+        delay={56}
+        stagger={5}
         size={92}
         lines={[{ text: "TA PLACE EST" }, { text: "PARMI LES" }, { text: "BÂTISSEURS.", accent: true }]}
       />
@@ -516,20 +517,28 @@ export const CTA: React.FC = () => {
           REJOINS-NOUS →
         </div>
       </div>
-      <div
-        style={{
-          position: "absolute",
-          top: 1410,
-          width: "100%",
-          textAlign: "center",
-          fontFamily: DISPLAY,
-          fontWeight: 500,
-          fontSize: 32,
-          color: COLORS.gray,
-          opacity: facts,
-        }}
-      >
-        Profil en 2 min · Accès WhatsApp · Sessions
+      <div style={{ position: "absolute", top: 1395, width: "100%", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 18,
+            padding: "18px 34px",
+            borderRadius: 16,
+            border: `2px solid ${COLORS.lime}`,
+            background: "rgba(200,255,0,0.08)",
+            fontFamily: MONO,
+            fontWeight: 700,
+            fontSize: 38,
+            letterSpacing: "0.12em",
+            color: COLORS.white,
+            opacity: bio,
+            transform: `translateY(${(1 - bio) * 30}px) scale(${interpolate(bio, [0, 1], [0.85, 1])})`,
+            boxShadow: `0 0 ${24 * bioPulse}px rgba(200,255,0,0.45)`,
+          }}
+        >
+          <span style={{ color: COLORS.lime }}>↑</span> LIEN DANS MA BIO
+        </div>
       </div>
     </AbsoluteFill>
   );

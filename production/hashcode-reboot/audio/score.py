@@ -1,4 +1,4 @@
-"""Bande-son originale HashCode Reboot (30 s, 48 kHz), générée par code : aucun droit tiers.
+"""Bande-son originale HashCode Reboot (34 s, 48 kHz), générée par code : aucun droit tiers.
 Calée sur le storyboard F03 : 120 BPM (1 temps = 0,5 s), changements de scène sur les temps.
 Usage : python3 -I score.py <sortie.wav>
 """
@@ -6,13 +6,13 @@ import sys, wave
 import numpy as np
 
 SR = 48000
-DUR = 30.0
+DUR = 34.0
 N = int(SR * DUR)
 t = np.arange(N) / SR
 rng = np.random.default_rng(7)
 out = np.zeros((N, 2))
 
-SCENES = [0, 3, 6, 11, 16, 21, 25]  # secondes (F03)
+SCENES = [0, 3, 6, 11, 16, 21, 26.5]  # secondes (F03)
 
 
 def add(sig, start, gain=1.0, pan=0.0):
@@ -130,21 +130,21 @@ add(data_burst(0.6), 17.5, 0.4)
 for sc in [10.4, 15.4, 20.3]:
     add(reverse_sweep(0.6), sc, 0.4)
 
-# 21–25 : crescendo (fusion des trois univers) + battements des mots
-add(pad([A, E * 2, A * 2, C * 4, E * 4], 4.0, 2.0), 21.0, 0.32)
-add(riser(4.0, 120, 5000), 21.0, 0.32)
-for b in np.arange(21.0, 25.0, 0.5):
-    add(kick(), b, 0.45 + (b - 21) * 0.08)
-for w in [21.7, 22.7, 23.7]:
+# 21–26,5 : crescendo (fusion des trois univers) + battements des mots
+add(pad([A, E * 2, A * 2, C * 4, E * 4], 5.5, 2.0), 21.0, 0.32)
+add(riser(5.5, 120, 5000), 21.0, 0.30)
+for b in np.arange(21.0, 26.5, 0.5):
+    add(kick(), b, 0.45 + (b - 21) * 0.06)
+for w in [23.4, 24.1, 25.17]:  # apprendre / expérimenter / construire (voix)
     add(impact(0.8, 70, 0.3), w, 0.5)
 
-# 25–30 : impact final + signature sonore (accord lumineux qui s'éteint)
-add(impact(4.5, 40, 1.6), 25.0, 1.0)
-add(pad([A, E * 2, A * 2, C * 4, E * 4, A * 4], 5.0, 0.05), 25.0, 0.30)
+# 26,5–34 : impact final + signature sonore (accord lumineux qui s'éteint)
+add(impact(4.5, 40, 1.6), 26.5, 1.0)
+add(pad([A, E * 2, A * 2, C * 4, E * 4, A * 4], 7.5, 0.05), 26.5, 0.30)
 sig_n = int(2.5 * SR)
 tt = np.arange(sig_n) / SR
 sig = (np.sin(2 * np.pi * 880 * tt) + 0.5 * np.sin(2 * np.pi * 1318.5 * tt)) * env(sig_n, 0.003, 0.5) * 0.3
-add(sig, 27.0, 0.6)
+add(sig, 30.17, 0.6)  # « Rejoins-nous »
 
 # fondu final + normalisation de crête (la loudness finale est réglée par ffmpeg)
 fade = np.minimum(1, (DUR - t) / 1.2)[:, None]

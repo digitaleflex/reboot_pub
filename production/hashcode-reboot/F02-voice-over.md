@@ -45,3 +45,10 @@ Le segment **21–25 s** (≈ 22 syllabes en 4 s) est le plus serré : il faudra
 
 ## Étape suivante
 **Enregistrement test** (même au téléphone) → mesure du timing réel (whisper.cpp est installé pour mesurer chaque mot) → verrouillage de la timeline F03.
+
+## Version produite (v2, 15/11/2026)
+Voix de synthèse en attendant l'enregistrement humain : Piper, voix `fr_FR-upmc-medium` (locuteur 0, « Pierre »), débit ×0,92.
+Script ajusté pour tenir dans le temps (durée totale portée à 34 s) :
+- 21–26,5 s : « Les trois univers. Une ambition : apprendre, expérimenter, construire. »
+- 26,5–34 s : « HashCode Reboot. Ta place est parmi les bâtisseurs. Rejoins-nous : le lien est dans ma bio. »
+« HashCode Reboot » est saisi en phonétique (`aʃkˈod ʁibˈut`). Génération : `production/hashcode-reboot/audio/build_mix.sh`.
